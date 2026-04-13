@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../store/authSlice';
+import NotificationBell from './NotificationBell';
 
 const navLinks = [
   { to: '/',           label: 'Dashboard',  icon: '📊' },
@@ -51,6 +52,7 @@ export default function Navbar() {
 
           {/* Desktop user */}
           <div className="hidden md:flex items-center gap-3">
+            <NotificationBell />
             <div className="text-right">
               <p className="text-sm font-medium leading-tight">{user?.name}</p>
               <p className="text-xs text-gray-400">{user?.xp ?? 0} XP · {user?.streak ?? 0}🔥</p>
@@ -65,6 +67,7 @@ export default function Navbar() {
 
           {/* Mobile */}
           <div className="flex md:hidden items-center gap-3">
+            <NotificationBell />
             <p className="text-xs text-gray-400">{user?.streak ?? 0}🔥 {user?.xp ?? 0}XP</p>
             <button
               onClick={() => setMenuOpen(o => !o)}
