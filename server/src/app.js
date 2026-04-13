@@ -34,6 +34,7 @@ app.use('/api/flashcards', require('./routes/flashcard.routes'));
 app.use('/api/plans/:planId/topics',   require('./routes/topic.routes'));
 app.use('/api/plans/:planId/sessions', require('./routes/session.routes'));
 app.use('/api/youtube', require('./routes/youtube.routes'));
+app.use('/api/quiz', require('./routes/quiz.routes'));
 
 app.use((req, res) => res.status(404).json({ success: false, message: 'Route not found' }));
 

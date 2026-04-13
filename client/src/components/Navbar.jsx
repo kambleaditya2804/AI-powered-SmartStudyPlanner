@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import useAuthStore from '../store/authStore';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../store/authSlice';
 
 const navLinks = [
   { to: '/',           label: 'Dashboard',  icon: '📊' },
@@ -9,12 +10,19 @@ const navLinks = [
   { to: '/flashcards', label: 'Flashcards', icon: '🃏' },
   { to: '/progress',   label: 'Progress',   icon: '📈' },
   { to: '/pomodoro',   label: 'Pomodoro',   icon: '🍅' },
+  { to: '/quiz', label: 'Quiz', icon: '🧠' },
 ];
 
 export default function Navbar() {
   const { pathname } = useLocation();
-  const { user, logout } = useAuthStore();
+  const dispatch = useDispatch();
+  const { user } = useSelector(state => state.auth);
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    window.location.href = '/login';
+  };
 
   return (
     <>
@@ -48,14 +56,14 @@ export default function Navbar() {
               <p className="text-xs text-gray-400">{user?.xp ?? 0} XP · {user?.streak ?? 0}🔥</p>
             </div>
             <button
-              onClick={logout}
+              onClick={handleLogout}
               className="text-xs text-gray-500 hover:text-red-400 transition-colors px-2 py-1 rounded hover:bg-gray-800"
             >
               Logout
             </button>
           </div>
 
-          {/* Mobile: streak + hamburger */}
+          {/* Mobile */}
           <div className="flex md:hidden items-center gap-3">
             <p className="text-xs text-gray-400">{user?.streak ?? 0}🔥 {user?.xp ?? 0}XP</p>
             <button
@@ -77,21 +85,18 @@ export default function Navbar() {
         <div className="md:hidden fixed inset-0 z-30 top-[57px]">
           <div className="absolute inset-0 bg-black/50" onClick={() => setMenuOpen(false)} />
           <div className="relative bg-gray-900 border-b border-gray-800 px-4 py-4 flex flex-col gap-1 shadow-xl">
-            {/* User info */}
             <div className="flex items-center justify-between pb-3 mb-2 border-b border-gray-800">
               <div>
                 <p className="font-semibold">{user?.name}</p>
                 <p className="text-xs text-gray-400">{user?.email}</p>
               </div>
               <button
-                onClick={logout}
+                onClick={handleLogout}
                 className="text-xs text-rose-400 px-3 py-1.5 rounded-lg bg-rose-500/10"
               >
                 Logout
               </button>
             </div>
-
-            {/* Links */}
             {navLinks.map(({ to, label, icon }) => (
               <Link
                 key={to}

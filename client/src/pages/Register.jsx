@@ -1,16 +1,19 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import useAuthStore from '../store/authStore';
+import { useDispatch, useSelector } from 'react-redux';
+import { registerUser, clearError } from '../store/authSlice';
 
 export default function Register() {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
-  const { register, isLoading, error } = useAuthStore();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { isLoading, error } = useSelector(state => state.auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const ok = await register(form.name, form.email, form.password);
-    if (ok) navigate('/');
+    dispatch(clearError());
+    const result = await dispatch(registerUser(form));
+    if (registerUser.fulfilled.match(result)) navigate('/');
   };
 
   return (
@@ -31,8 +34,7 @@ export default function Register() {
           <div>
             <label className="text-xs text-gray-400 block mb-1">Full name</label>
             <input
-              type="text"
-              required
+              type="text" required
               value={form.name}
               onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
               className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-primary-500 transition-colors"
@@ -43,8 +45,7 @@ export default function Register() {
           <div>
             <label className="text-xs text-gray-400 block mb-1">Email</label>
             <input
-              type="email"
-              required
+              type="email" required
               value={form.email}
               onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
               className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-primary-500 transition-colors"
@@ -55,9 +56,7 @@ export default function Register() {
           <div>
             <label className="text-xs text-gray-400 block mb-1">Password</label>
             <input
-              type="password"
-              required
-              minLength={8}
+              type="password" required minLength={8}
               value={form.password}
               onChange={e => setForm(f => ({ ...f, password: e.target.value }))}
               className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:border-primary-500 transition-colors"

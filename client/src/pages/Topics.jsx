@@ -31,7 +31,6 @@ function TopicRow({ topic, planId, onEdit }) {
     <div className={`card transition-all ${topic.isCompleted ? 'opacity-50' : ''}`}>
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3 flex-1 min-w-0">
-          {/* Checkbox */}
           <button
             onClick={() => toggleComplete.mutate()}
             className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 transition-colors ${
@@ -53,8 +52,6 @@ function TopicRow({ topic, planId, onEdit }) {
             <p className="text-xs text-gray-400 mb-3">
               {topic.subject} · {difficultyLabels[topic.difficulty]} · {topic.estimatedHours}h estimated
             </p>
-
-            {/* Progress bar */}
             <div className="flex items-center gap-2">
               <div className="flex-1 bg-gray-800 rounded-full h-1.5">
                 <div
@@ -64,8 +61,6 @@ function TopicRow({ topic, planId, onEdit }) {
               </div>
               <span className="text-xs text-gray-400 shrink-0">{pct}%</span>
             </div>
-
-            {/* Confidence */}
             <div className="flex items-center gap-2 mt-2">
               <span className="text-xs text-gray-500">Confidence:</span>
               <div className="flex gap-1">
@@ -78,7 +73,6 @@ function TopicRow({ topic, planId, onEdit }) {
           </div>
         </div>
 
-        {/* Actions */}
         <div className="flex gap-2 shrink-0">
           <button onClick={() => onEdit(topic)} className="btn-ghost text-xs px-3 py-1.5">Edit</button>
           <button
@@ -95,6 +89,7 @@ function TopicRow({ topic, planId, onEdit }) {
 
 function EditModal({ topic, planId, onClose }) {
   const qc = useQueryClient();
+  const [activeTab, setActiveTab] = useState('edit'); // 'edit' | 'resources'
   const [form, setForm] = useState({
     confidence: topic.confidence || 0,
     priority: topic.priority,
@@ -109,66 +104,95 @@ function EditModal({ topic, planId, onClose }) {
 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 px-4">
-      <div className="card w-full max-w-md">
-        <div className="flex items-center justify-between mb-5">
+      <div className="card w-full max-w-lg max-h-[90vh] overflow-y-auto">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4">
           <h3 className="font-semibold">{topic.name}</h3>
           <button onClick={onClose} className="text-gray-500 hover:text-white">✕</button>
         </div>
 
-        <div className="flex flex-col gap-4">
-          <div>
-            <label className="text-xs text-gray-400 block mb-1">
-              Confidence: <span className="text-primary-400 font-semibold">{form.confidence}%</span>
-            </label>
-            <input
-              type="range" min="0" max="100" step="5"
-              value={form.confidence}
-              onChange={e => setForm(f => ({ ...f, confidence: parseInt(e.target.value) }))}
-              className="w-full accent-indigo-500"
-            />
-          </div>
-
-          <div>
-            <label className="text-xs text-gray-400 block mb-1">
-              Priority: <span className="text-amber-400">{priorityLabels[form.priority]}</span>
-            </label>
-            <input
-              type="range" min="1" max="5" step="1"
-              value={form.priority}
-              onChange={e => setForm(f => ({ ...f, priority: parseInt(e.target.value) }))}
-              className="w-full accent-amber-500"
-            />
-          </div>
-
-          <div>
-            <label className="text-xs text-gray-400 block mb-1">
-              Difficulty: <span className="text-rose-400">{difficultyLabels[form.difficulty]}</span>
-            </label>
-            <input
-              type="range" min="1" max="5" step="1"
-              value={form.difficulty}
-              onChange={e => setForm(f => ({ ...f, difficulty: parseInt(e.target.value) }))}
-              className="w-full accent-rose-500"
-            />
-          </div>
-
-          <div>
-            <label className="text-xs text-gray-400 block mb-1">Estimated hours</label>
-            <input
-              type="number" min="0.5" step="0.5"
-              value={form.estimatedHours}
-              onChange={e => setForm(f => ({ ...f, estimatedHours: parseFloat(e.target.value) }))}
-              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary-500"
-            />
-          </div>
-
-          <div className="flex gap-3 mt-1">
-            <button onClick={() => update.mutate()} className="btn-primary flex-1 py-2.5">
-              {update.isPending ? 'Saving...' : 'Save changes'}
-            </button>
-            <button onClick={onClose} className="btn-ghost flex-1 py-2.5">Cancel</button>
-          </div>
+        {/* Tab toggle */}
+        <div className="flex gap-1 bg-gray-800 p-1 rounded-xl mb-5">
+          <button
+            onClick={() => setActiveTab('edit')}
+            className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+              activeTab === 'edit' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            ✏️ Edit
+          </button>
+          <button
+            onClick={() => setActiveTab('resources')}
+            className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+              activeTab === 'resources' ? 'bg-gray-700 text-white' : 'text-gray-400 hover:text-white'
+            }`}
+          >
+            🎬 Resources
+          </button>
         </div>
+
+        {/* Edit tab */}
+        {activeTab === 'edit' && (
+          <div className="flex flex-col gap-4">
+            <div>
+              <label className="text-xs text-gray-400 block mb-1">
+                Confidence: <span className="text-primary-400 font-semibold">{form.confidence}%</span>
+              </label>
+              <input
+                type="range" min="0" max="100" step="5"
+                value={form.confidence}
+                onChange={e => setForm(f => ({ ...f, confidence: parseInt(e.target.value) }))}
+                className="w-full accent-indigo-500"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs text-gray-400 block mb-1">
+                Priority: <span className="text-amber-400">{priorityLabels[form.priority]}</span>
+              </label>
+              <input
+                type="range" min="1" max="5" step="1"
+                value={form.priority}
+                onChange={e => setForm(f => ({ ...f, priority: parseInt(e.target.value) }))}
+                className="w-full accent-amber-500"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs text-gray-400 block mb-1">
+                Difficulty: <span className="text-rose-400">{difficultyLabels[form.difficulty]}</span>
+              </label>
+              <input
+                type="range" min="1" max="5" step="1"
+                value={form.difficulty}
+                onChange={e => setForm(f => ({ ...f, difficulty: parseInt(e.target.value) }))}
+                className="w-full accent-rose-500"
+              />
+            </div>
+
+            <div>
+              <label className="text-xs text-gray-400 block mb-1">Estimated hours</label>
+              <input
+                type="number" min="0.5" step="0.5"
+                value={form.estimatedHours}
+                onChange={e => setForm(f => ({ ...f, estimatedHours: parseFloat(e.target.value) }))}
+                className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-primary-500"
+              />
+            </div>
+
+            <div className="flex gap-3 mt-1">
+              <button onClick={() => update.mutate()} className="btn-primary flex-1 py-2.5">
+                {update.isPending ? 'Saving...' : 'Save changes'}
+              </button>
+              <button onClick={onClose} className="btn-ghost flex-1 py-2.5">Cancel</button>
+            </div>
+          </div>
+        )}
+
+        {/* Resources tab */}
+        {activeTab === 'resources' && (
+          <YouTubeResources topic={topic} />
+        )}
       </div>
     </div>
   );
@@ -218,7 +242,6 @@ export default function Topics() {
         <a href="/onboarding" className="btn-primary text-sm px-4 py-2">+ Add topics</a>
       </div>
 
-      {/* Summary bar */}
       <div className="card mb-6">
         <div className="flex items-center justify-between text-sm mb-2">
           <span className="text-gray-400">Overall progress</span>
@@ -237,7 +260,6 @@ export default function Topics() {
         </div>
       </div>
 
-      {/* Filter tabs */}
       <div className="flex gap-1 bg-gray-900 p-1 rounded-xl w-fit mb-5">
         {['all', 'pending', 'completed'].map(f => (
           <button
@@ -252,7 +274,6 @@ export default function Topics() {
         ))}
       </div>
 
-      {/* Topic list */}
       {isLoading ? (
         <div className="flex flex-col gap-3">
           {[1,2,3].map(i => <div key={i} className="card h-24 animate-pulse bg-gray-800" />)}
