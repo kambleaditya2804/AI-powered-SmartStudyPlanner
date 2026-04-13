@@ -1,5 +1,4 @@
 # 📚 Smart Study Planner
-
 An AI-powered full-stack study management platform that helps students prepare for competitive exams with personalized schedules, spaced repetition, and AI-generated content.
 
 🌐 **Live Demo:** [ai-powered-smart-study-planner.vercel.app](https://ai-powered-smart-study-planner.vercel.app)
@@ -194,6 +193,14 @@ smart-study-planner/
 ## 📸 Screenshots
 
 > Dashboard, Topics, Quiz, Flashcards, Schedule pages
+<img width="1901" height="956" alt="image" src="https://github.com/user-attachments/assets/44678a48-c501-4777-bb7b-80e5996a2bd9" /># 📚 Smart Study Planner
+<img width="1884" height="960" alt="image" src="https://github.com/user-attachments/assets/d4137fce-37d6-4dec-8a10-fdc00a4c1bd3" />
+<img width="1900" height="952" alt="image" src="https://github.com/user-attachments/assets/f0e1cb75-8056-4b19-9041-71f2ee80165d" />
+<img width="1893" height="959" alt="image" src="https://github.com/user-attachments/assets/0de3222f-4457-43ed-be68-31fb322715d5" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/463b9812-d9b8-4f4d-948e-e740cc757f25" />
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/0f7e0873-550d-4059-a0a0-f78e1464b0bc" />
+
 
 ---
 
