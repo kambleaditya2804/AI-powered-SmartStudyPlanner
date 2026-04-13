@@ -11,7 +11,7 @@ const navLinks = [
   { to: '/flashcards', label: 'Flashcards', icon: '🃏' },
   { to: '/progress',   label: 'Progress',   icon: '📈' },
   { to: '/pomodoro',   label: 'Pomodoro',   icon: '🍅' },
-  { to: '/quiz', label: 'Quiz', icon: '🧠' },
+  { to: '/quiz', label: 'Quiz', icon: '🧠' },{ to: '/ai-flashcards', label: 'AI Cards', icon: '✨' },
 ];
 
 export default function Navbar() {

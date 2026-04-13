@@ -102,7 +102,7 @@ const generateSmartNotifications = async (userId) => {
   }
 
   // ── 4. Flashcard review reminder ─────────────────────────────────────────────
-  const { Flashcard } = require('./StudyPlan.model') ;
+  const { Flashcard } = require('../models/StudyPlan.model') ;
   const dueFlashcards = await Flashcard.countDocuments({
     user: userId,
     nextReviewDate: { $lte: now },

@@ -14,6 +14,7 @@ import Schedule from './pages/Schedule';
 import Progress from './pages/Progress';
 import Pomodoro from './pages/Pomodoro';
 import Quiz from './pages/Quiz';
+import AIFlashcards from './pages/AIFlashcards';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, staleTime: 30000 } },
@@ -52,16 +53,17 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <Routes>
-          <Route path="/login"    element={<AuthRoute><Login /></AuthRoute>} />
+          <Route path="/login" element={<AuthRoute><Login /></AuthRoute>} />
           <Route path="/register" element={<AuthRoute><Register /></AuthRoute>} />
           <Route path="/onboarding" element={<ProtectedRoute><Onboarding /></ProtectedRoute>} />
           <Route path="/" element={<ProtectedRoute><AppLayout><Dashboard /></AppLayout></ProtectedRoute>} />
-          <Route path="/schedule"   element={<ProtectedRoute><AppLayout><Schedule /></AppLayout></ProtectedRoute>} />
-          <Route path="/topics"     element={<ProtectedRoute><AppLayout><Topics /></AppLayout></ProtectedRoute>} />
+          <Route path="/schedule" element={<ProtectedRoute><AppLayout><Schedule /></AppLayout></ProtectedRoute>} />
+          <Route path="/topics" element={<ProtectedRoute><AppLayout><Topics /></AppLayout></ProtectedRoute>} />
           <Route path="/flashcards" element={<ProtectedRoute><AppLayout><Flashcards /></AppLayout></ProtectedRoute>} />
-          <Route path="/progress"   element={<ProtectedRoute><AppLayout><Progress /></AppLayout></ProtectedRoute>} />
-          <Route path="/pomodoro"   element={<ProtectedRoute><AppLayout><Pomodoro /></AppLayout></ProtectedRoute>} />
+          <Route path="/progress" element={<ProtectedRoute><AppLayout><Progress /></AppLayout></ProtectedRoute>} />
+          <Route path="/pomodoro" element={<ProtectedRoute><AppLayout><Pomodoro /></AppLayout></ProtectedRoute>} />
           <Route path="/quiz" element={<ProtectedRoute><AppLayout><Quiz /></AppLayout></ProtectedRoute>} />
+          <Route path="/ai-flashcards" element={<ProtectedRoute><AppLayout><AIFlashcards /></AppLayout></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
