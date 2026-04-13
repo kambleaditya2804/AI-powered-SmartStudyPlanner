@@ -15,6 +15,7 @@ import Progress from './pages/Progress';
 import Pomodoro from './pages/Pomodoro';
 import Quiz from './pages/Quiz';
 import AIFlashcards from './pages/AIFlashcards';
+import Footer from './components/Footer';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 1, staleTime: 30000 } },
@@ -37,6 +38,7 @@ function AppLayout({ children }) {
     <div className="min-h-screen">
       <Navbar />
       <main>{children}</main>
+      <Footer/>
     </div>
   );
 }
